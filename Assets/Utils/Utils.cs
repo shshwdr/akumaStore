@@ -8,6 +8,26 @@ public class Utils : MonoBehaviour
     static public Vector2[] dir4V2 = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, -1), new Vector2(0, 1), };
     static public Vector2Int[] dir4V2Int = { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(0, 1), };
     static public Vector2[] dir5V2 = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, -1), new Vector2(0, 1), new Vector2(0, 0), };
+    T CopyComponent<T>(T original, GameObject destination) where T : Component
+    {
+        System.Type type = original.GetType();
+        var dst = destination.GetComponent(type) as T;
+        if (!dst) dst = destination.AddComponent(type) as T;
+        var fields = type.GetFields();
+        foreach (var field in fields)
+        {
+            if (field.IsStatic) continue;
+            field.SetValue(dst, field.GetValue(original));
+        }
+        var props = type.GetProperties();
+        foreach (var prop in props)
+        {
+            if (!prop.CanWrite || !prop.CanWrite || prop.Name == "name") continue;
+            prop.SetValue(dst, prop.GetValue(original, null), null);
+        }
+        return dst as T;
+    }
+
     static public bool randomBool()
     {
         return Random.Range(0, 2) > 0;
