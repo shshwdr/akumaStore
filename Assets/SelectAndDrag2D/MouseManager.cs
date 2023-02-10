@@ -11,7 +11,7 @@ public class MouseManager : Singleton<MouseManager>
     public GameObject selectedItem;
     public float rotateSmooth = 10.0f;
 
-    public GridOverlay previousSelected;
+    public IClickable previousSelected;
     //void selectItem(GameObject go)
     //{
     //    selectedItem = go;
@@ -88,7 +88,7 @@ public class MouseManager : Singleton<MouseManager>
                 print("on ui");
                 return;
             }
-            if (previousSelected)
+            if (previousSelected!=null)
             {
                 previousSelected.hideInfo();
             }
@@ -98,7 +98,19 @@ public class MouseManager : Singleton<MouseManager>
             RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos2D, Vector2.zero);
             if (hits.Length>0)
             {
-                foreach(var hit in hits)
+                foreach (var hit in hits)
+                {
+                    Debug.Log(hit.collider.gameObject.name);
+                    var gridOverlay = hit.collider.GetComponent<Tower>();
+                    if (gridOverlay)
+                    {
+                        gridOverlay.showInfo();
+                        previousSelected = gridOverlay;
+                        return;
+                    }
+                }
+
+                foreach (var hit in hits)
                 {
                     Debug.Log(hit.collider.gameObject.name);
                     var gridOverlay = hit.collider.GetComponent<GridOverlay>();
@@ -106,7 +118,7 @@ public class MouseManager : Singleton<MouseManager>
                     {
                         gridOverlay.showInfo();
                         previousSelected = gridOverlay;
-                        break;
+                        return;
                     }
                 }
             }

@@ -52,6 +52,40 @@ namespace Sinbad
             return ret;
         }
 
+        public static List<List<T>> LoadList<T>(string filename, bool includeTitle)
+        {
+            TextReader t;
+            //var dbPath = "Assets/StreamingAssets/" + filename;
+            var dbPath = path + filename;
+            var text = Resources.Load<TextAsset>("csv/" + filename).text;
+            var splitFile = new string[] { "\r\n", "\r", "\n" };
+            var lines = text.Split(splitFile, StringSplitOptions.None);
+            int lineId = 0;
+            var ret = new List<List<T>>();
+            if (!includeTitle)
+            {
+
+                string header = lines[lineId];
+                lineId++;
+            }
+            while (lineId < lines.Length - 1)
+            {
+                string line = lines[lineId];
+                lineId++;
+                var obj = new List<T>();
+                // box manually to avoid issues with structs
+                object boxed = obj;
+                string[] values = EnumerateCsvLine(line).ToArray();
+                foreach (var v in values)
+                {
+                    T parsedV = (T)ParseString(v,typeof( T));
+                    obj.Add(parsedV);
+                }
+                ret.Add(obj);
+            }
+            return ret;
+        }
+
 
         // Load a CSV into a list of struct/classes from a file where each line = 1 object
         // First line of the CSV must be a header containing property names
@@ -458,6 +492,9 @@ namespace Sinbad
                     res.Add(pair);
                 }
                 return res;
+            }else if (t == typeof(bool))
+            {
+                return int.Parse(strValue) == 1;
             }
             if(strValue == "")
             {

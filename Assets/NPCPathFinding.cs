@@ -13,11 +13,13 @@ public class NPCPathFinding : MonoBehaviour
     Vector3 target;
     public float moveSpeed = 3;
     public float nextWaypointDistance = 0.3f;
+    Customer customer;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         seeker = GetComponent<Seeker>();
+        customer = GetComponent<Customer>();
         //npc = GetComponent<NPC>();
         //renderer = GetComponentInChildren<IsometricSpineRenderer>();
     }
@@ -53,7 +55,10 @@ public class NPCPathFinding : MonoBehaviour
         }
     }
     // Start is called before the first frame update
-
+    public void cancelPath()
+    {
+        path = null;
+    }
     public void setTarget(Transform t)
     {
         target = t.position;
@@ -65,6 +70,7 @@ public class NPCPathFinding : MonoBehaviour
     {
         if (path == null)
         {
+            rb.velocity = Vector2.zero;
            // animator.SetFloat("speed", 0);
             //renderer.setDirection(Vector2.zero);
             return;
@@ -79,7 +85,9 @@ public class NPCPathFinding : MonoBehaviour
         {
             path = null;
             reachedEndOfPath = true;
-           // npc.finishPath();
+            // npc.finishPath();
+            customer.spendMoney();
+            customer.finishedShopping();
            // animator.SetFloat("speed", 0);
             return;
         }

@@ -23,10 +23,31 @@ public class AllItemInfo
 }
 public class Inventory : Singleton<Inventory>
 {
+
+    int coins = 75;
     public Dictionary<string, ItemInfo> itemDict = new Dictionary<string, ItemInfo>();
 
     public int inventoryUnlockedCellCount = 2;
     public string selectedItemName;
+
+    public int getCoin()
+    {
+        return coins;
+    }
+    public void addCoin(int amount)
+    {
+        coins += amount;
+        EventPool.Trigger("coinChanged");
+    }
+    public void consumeCoin(int amount)
+    {
+        coins -= amount;
+        EventPool.Trigger("coinChanged");
+    }
+    public bool canConsumeCoin(int amount)
+    {
+        return coins >= amount;
+    }
 
     public void addInventoryUnlockedCell()
     {

@@ -4,15 +4,15 @@ using TMPro;
 using UnityEngine;
 
 
-public class SelectableCell:MonoBehaviour
-{
-    public TMP_Text nameLabel;
-    public TMP_Text descLabel;
-    public TowerInfo info;
-    public void init(TowerInfo _info)
-    {
-        info = _info;
-        nameLabel.text = info.displayName;
-        descLabel.text = info.description;
-    }
-}
+//public class SelectableCell:MonoBehaviour
+//{
+//    public TMP_Text nameLabel;
+//    public TMP_Text descLabel;
+//    public TowerInfo info;
+//    protected IClickable overlay;
+//    public virtual void init(TowerInfo _info, IClickable _overlay)
+//    {
+//        info = _info;
+//        overlay = _overlay;
+//    }
+//}

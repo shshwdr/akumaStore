@@ -1,5 +1,5 @@
-﻿name,displayName,placeType,description,attackTime,attackDamage,range,isUnlocked
-single,苹果,shelf,单点攻击,0.5,1,1,
-bomb,橘子,shelf,范围攻击,1,1,1,
-fridge,饮料柜,ground,过路费,,1,1,
-guide,导购,ground,减速,1,,1,
+﻿name,displayName,placeType,isUnlocked
+single,苹果,shelf,1
+bomb,薯片,shelf,1
+fridge,饮料柜,ground,1
+guide,导购,ground,1

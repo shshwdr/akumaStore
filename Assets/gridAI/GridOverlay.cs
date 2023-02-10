@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridOverlay : MonoBehaviour
+public class GridOverlay : MonoBehaviour,IClickable
 {
     float transparency = 0.5f;
     SpriteRenderer renderer;
 
     public GameObject selections;
 
-    public SelectableCell[] selectableCells;
+    public SelectableTowerCell[] selectableCells;
 
     public string type;
     private void Awake()
@@ -19,7 +19,7 @@ public class GridOverlay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        selectableCells = selections.GetComponentsInChildren<SelectableCell>();
+        selectableCells = selections.GetComponentsInChildren<SelectableTowerCell>();
     }
 
     public void showInfo()
@@ -30,14 +30,14 @@ public class GridOverlay : MonoBehaviour
         int i = 0;
         foreach(var info in TowerManager.Instance.towerDict.Values)
         {
-            if(info.placeType == type)
+            if(info.placeType == type && info.isUnlocked == 1)
             {
                 if (i >= selectableCells.Length)
                 {
                     Debug.LogError("too many items but not enough cells, plan to add item "+i.ToString()+" but only have cell count "+ selectableCells.Length.ToString());
                 }
                 selectableCells[i].gameObject.SetActive(true);
-                selectableCells[i].GetComponent<SelectableCell>().init(info);
+                selectableCells[i].GetComponent<SelectableTowerCell>().init(info,this);
                 i++;
             }
         }
